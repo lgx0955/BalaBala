@@ -1,0 +1,114 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="74dp"
+    android:clickable="true">
+
+    <LinearLayout
+        android:id="@+id/front"
+        android:layout_width="match_parent"
+        android:layout_height="74dip"
+        android:orientation="vertical"
+       >
+
+        <RelativeLayout
+            android:id="@+id/front1"
+            style="@style/layout_fill_fill"
+            android:layout_height="73dip"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv"
+                style="@style/layout_fill_fill"
+                android:layout_height="74dip"
+                android:visibility="gone" />
+            <!-- 左边图标 -->
+
+            <ImageView
+                android:id="@+id/iv"
+                style="@style/layout_wrap_wrap"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"></ImageView>
+
+            <!-- 右边信息 -->
+
+            <RelativeLayout
+                android:id="@+id/rv"
+                style="@style/layout_wrap_fill"
+                android:layout_height="73dip"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dip"
+                android:gravity="right">
+
+                <TextView
+                    android:id="@+id/time"
+                    style="@style/layout_wrap_wrap"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="8dip"
+                    android:singleLine="true"
+                    android:text="3月22日"
+
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/textSize_normal" />
+
+                <TextView
+                    android:id="@+id/zanNum"
+                    style="@style/layout_wrap_wrap"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignRight="@id/time"
+                    android:layout_below="@id/time"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="20dp"
+
+                    android:gravity="center"
+                    android:text="22"
+
+                    android:textIsSelectable="false"
+                    android:textSize="@dimen/textSize_normal" />
+            </RelativeLayout>
+
+            <!-- 中间的文字信息 -->
+
+            <TextView
+                android:id="@+id/title_tv"
+                style="@style/layout_fill_wrap"
+                android:layout_marginLeft="@dimen/public_margin_normal"
+                android:layout_marginTop="9dip"
+                android:layout_toLeftOf="@id/rv"
+                android:layout_toRightOf="@id/iv"
+                android:singleLine="true"
+                android:text="南京市玄武南京市"
+
+                android:textIsSelectable="false"
+                android:textSize="@dimen/textSize_big" />
+
+            <TextView
+                android:id="@+id/detail_tv"
+                style="@style/layout_fill_wrap"
+                android:layout_below="@id/title_tv"
+                android:layout_marginLeft="@dimen/public_margin_normal"
+                android:layout_marginTop="4dip"
+                android:layout_toLeftOf="@id/rv"
+                android:layout_toRightOf="@id/iv"
+                android:lineSpacingExtra="2.5dp"
+                android:lines="2"
+                android:singleLine="false"
+                android:text="南京市"
+
+                android:textIsSelectable="false"
+                android:textSize="@dimen/textSize_normal" />
+            <!-- 右侧视图 -->
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/sepratorline_rv"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/line_width_0.5"
+             />
+    </LinearLayout>
+
+</FrameLayout>

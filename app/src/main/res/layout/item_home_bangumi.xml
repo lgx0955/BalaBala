@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.CardView
+        android:id="@+id/bangumi_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        app:cardElevation="3dp">
+
+        <LinearLayout
+            android:id="@+id/bangumi2_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/bangumi2_icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightgray"/>
+
+            <TextView
+                android:id="@+id/bangumi2_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="恶棍之家 第六季"
+                android:layout_marginTop="8dp"
+                android:padding="4dp"
+                android:textColor="@color/bili_color_black"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                >
+
+                <TextView
+                    android:id="@+id/item_bangumi_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="第1话"
+                    android:gravity="center"
+                    android:textColor="#666"/>
+
+                <TextView
+                    android:id="@+id/item_bangumi_fav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawableLeft="@drawable/ic_bgm_fav"
+                    android:drawablePadding="4dp"
+                    android:text="5"
+                    android:textColor="#666"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
