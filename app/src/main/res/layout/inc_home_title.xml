@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rl_title_1"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/btn_left_opt"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/iv_left_opt"
+            android:layout_gravity="center"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/ic_drawer_home"/>
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_gravity="center"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="8dp"
+            android:padding="8dp"
+            android:background="@drawable/bili_default_avatar"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_large"
+            android:singleLine="true" />
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/btn_opt"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:background="@null"
+        android:minWidth="40dp"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_opt"
+            android:layout_gravity="center"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:padding="8dp" />
+        <TextView
+            android:id="@+id/tv_opt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium"
+            android:singleLine="true"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btn_title"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:clickable="true"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/iv_title"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_large"
+            android:textColor="@color/white"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="标题"
+            android:layout_gravity="center"
+            android:gravity="center"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:minWidth="160dp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</RelativeLayout>

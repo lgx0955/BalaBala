@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_personal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- title -->
+
+    <RelativeLayout
+        android:id="@+id/wenzhang_rv"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        >
+
+        <View
+            android:id="@+id/sep1"
+            android:layout_width="2dp"
+            android:layout_height="29dp"
+            android:layout_marginLeft="9dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/red"
+            android:paddingTop="10dp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/current_time__iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/sep1"
+            android:gravity="center"
+            android:text="6月20日"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_size_15" />
+        <!-- 更多图标 -->
+
+        <ImageView
+            android:id="@+id/more_iv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/more_iv1"
+            android:text="更多"
+
+            android:textSize="@dimen/font_size_15"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+
+    <!-- listview -->
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:listSelector="#00000000"
+        android:scrollbars="none"
+        android:smoothScrollbar="true"></ListView>
+
+</LinearLayout>
