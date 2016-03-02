@@ -247,27 +247,31 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
                     mDanmakuView.start();
                 }
             });
-            mDanmakuView.setOnDanmakuClickListener(new IDanmakuView.OnDanmakuClickListener() {
-                @Override
-                public void onDanmakuClick(BaseDanmaku latest) {
-                    Log.d("DFM", "onDanmakuClick text:" + latest.text);
-                }
-
-                @Override
-                public void onDanmakuClick(IDanmakus danmakus) {
-                    Log.d("DFM", "onDanmakuClick danmakus size:" + danmakus.size());
-                }
-            });
+//            mDanmakuView.setOnDanmakuClickListener(new IDanmakuView.OnDanmakuClickListener() {
+//                @Override
+//                public void onDanmakuClick(BaseDanmaku latest) {
+//                    Log.d("DFM", "onDanmakuClick text:" + latest.text);
+//                    mMediaController.setVisibility(View.VISIBLE);
+//                    mVideoView.performClick();
+//                }
+//
+//                @Override
+//                public void onDanmakuClick(IDanmakus danmakus) {
+//                    Log.d("DFM", "onDanmakuClick danmakus size:" + danmakus.size());
+//                    mMediaController.setVisibility(View.VISIBLE);
+//                }
+//            });
             mDanmakuView.prepare(mParser, danmakuContext);
-            mDanmakuView.showFPS(true);
+            mDanmakuView.showFPS(false);
             mDanmakuView.enableDanmakuDrawingCache(true);
-            ((View) mDanmakuView).setOnClickListener(new View.OnClickListener() {
+//            ((View) mDanmakuView).setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View view) {
+//                    mMediaController.setVisibility(View.VISIBLE);
+//                }
+//            });
 
-                @Override
-                public void onClick(View view) {
-                    mMediaController.setVisibility(View.VISIBLE);
-                }
-            });
         }
 
 

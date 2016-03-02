@@ -12,17 +12,19 @@
         android:layout_height="match_parent"
         android:background="#0099cc">
 
+
+
+
         <cn.figo.mydemo.widget.media.IjkVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"></cn.figo.mydemo.widget.media.IjkVideoView>
-
         <master.flame.danmaku.ui.widget.DanmakuView
             android:id="@+id/sv_danmaku"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="match_parent"
+            />
         <TextView
             android:id="@+id/toast_text_view"
             android:layout_width="wrap_content"
@@ -39,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:background="@color/ijk_transparent_dark"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:visibility="gone"/>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
