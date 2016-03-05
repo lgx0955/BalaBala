@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,10 +39,13 @@ import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -56,6 +60,8 @@ import cn.figo.mydemo.R;
 import cn.figo.mydemo.app.Settings;
 import cn.figo.mydemo.content.RecentMediaStorage;
 import cn.figo.mydemo.ui.fragment.TracksFragment;
+import cn.figo.mydemo.utils.DensityUtils;
+import cn.figo.mydemo.utils.VideoPlayerUtil;
 import cn.figo.mydemo.widget.media.AndroidMediaController;
 import cn.figo.mydemo.widget.media.IjkVideoView;
 import cn.figo.mydemo.widget.media.MeasureHelper;
@@ -110,7 +116,6 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-
         mSettings = new Settings(this);
 
 //      handle arguments
@@ -207,7 +212,6 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         }
 
         initDanmaku();
-
     }
     public void initDanmaku() {
         // 设置最大显示行数
@@ -452,44 +456,6 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
 
     }
 
-    private void addDanmaku(boolean islive) {
-        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
-        if (danmaku == null || mDanmakuView == null) {
-            return;
-        }
-        // for(int i=0;i<100;i++){
-        // }
-        danmaku.text = "这是一条弹幕" + System.nanoTime();
-        danmaku.padding = 5;
-        danmaku.priority = 0;  // 可能会被各种过滤器过滤并隐藏显示
-        danmaku.isLive = islive;
-        danmaku.time = mDanmakuView.getCurrentTime() + 1200;
-        danmaku.textSize = 25f * (mParser.getDisplayer().getDensity() - 0.6f);
-        danmaku.textColor = Color.RED;
-        danmaku.textShadowColor = Color.WHITE;
-        // danmaku.underlineColor = Color.GREEN;
-        danmaku.borderColor = Color.GREEN;
-        mDanmakuView.addDanmaku(danmaku);
-
-    }
-
-    private void addDanmaKuShowTextAndImage(boolean islive) {
-        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
-        Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher);
-        drawable.setBounds(0, 0, 100, 100);
-        SpannableStringBuilder spannable = createSpannable(drawable);
-        danmaku.text = spannable;
-        danmaku.padding = 5;
-        danmaku.priority = 1;  // 一定会显示, 一般用于本机发送的弹幕
-        danmaku.isLive = islive;
-        danmaku.time = mDanmakuView.getCurrentTime() + 1200;
-        danmaku.textSize = 25f * (mParser.getDisplayer().getDensity() - 0.6f);
-        danmaku.textColor = Color.RED;
-        danmaku.textShadowColor = 0; // 重要：如果有图文混排，最好不要设置描边(设textShadowColor=0)，否则会进行两次复杂的绘制导致运行效率降低
-        danmaku.underlineColor = Color.GREEN;
-        mDanmakuView.addDanmaku(danmaku);
-    }
-
     private SpannableStringBuilder createSpannable(Drawable drawable) {
         String text = "bitmap";
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(text);
@@ -499,4 +465,5 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         spannableStringBuilder.setSpan(new BackgroundColorSpan(Color.parseColor("#8A2233B1")), 0, spannableStringBuilder.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         return spannableStringBuilder;
     }
+
 }

@@ -7,10 +7,11 @@ import android.widget.TextView;
 
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.figo.mydemo.R;
-import cn.figo.mydemo.app.AppService;
 import cn.figo.mydemo.event.RequestSearchEvent;
 
 /**
@@ -33,7 +34,7 @@ public class DiscoverTopViewHolder extends BaseViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppService.getBus().post(new RequestSearchEvent());
+                EventBus.getDefault().post(new RequestSearchEvent());
             }
         });
     }

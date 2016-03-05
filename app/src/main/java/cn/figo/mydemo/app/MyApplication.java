@@ -25,7 +25,6 @@ public class MyApplication extends Application {
 
         mRefWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
-        AppService.getInstance().initService();
 
         liteOrmDb = LiteOrm.newCascadeInstance(mContext, "liteorm.db");
 
@@ -37,7 +36,7 @@ public class MyApplication extends Application {
 
     public static SharedPreferences getSharedPreferences() {
         if (sharedPreferences == null) {
-            sharedPreferences = mContext.getSharedPreferences("httpcccaaaccchhheeeeeee", Context.MODE_PRIVATE);
+            sharedPreferences = mContext.getSharedPreferences("httpcache", Context.MODE_PRIVATE);
         }
         return sharedPreferences;
     }

@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.androidquery.AQuery;
 import com.google.gson.Gson;
-import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import cn.figo.mydemo.base.BaseAppManager;
@@ -72,8 +71,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
             throw new IllegalArgumentException("You must return a right contentView layout resource Id");
         }
 
-//        AppService.getInstance().getBus().register(this);
-
         try {
             ButterKnife.bind(this);
         }catch (Exception e){e.printStackTrace();}
@@ -86,12 +83,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         BaseAppManager.getInstance().removeActivity(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        AppService.getInstance().getBus().unregister(this);
     }
 
     /**
@@ -107,14 +98,4 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      */
     protected abstract void init();
 
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart(TAG_LOG); //统计页面
-        MobclickAgent.onResume(this);          //统计时长
-    }
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd(TAG_LOG); // 保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息
-        MobclickAgent.onPause(this);
-    }
 }

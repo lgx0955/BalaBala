@@ -4,17 +4,9 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.util.concurrent.TimeUnit;
 
-import cn.figo.mydemo.app.AppService;
-import cn.figo.mydemo.event.RecommentEvent;
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 
 /**
@@ -70,7 +62,6 @@ public class RetrofitClientManager {
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseurl)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .client(httpClient)
                     .build();
         }
@@ -84,33 +75,4 @@ public class RetrofitClientManager {
         responseCall.enqueue(myRetrofitCallBack);
     }
 
-    public static <T> void getAsyn(Observable<T> responseCall, MyRetrofitCallBack myRetrofitCallBack) {
-        cachePolicy = myRetrofitCallBack.getCachePolicy();
-        retrofit.client().interceptors().clear();
-//        retrofit.client().interceptors().add(new GetMeThodInterceptor(cachePolicy, myRetrofitCallBack,responseCall));
-        responseCall.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Action1<T>() {
-                    @Override
-                    public void call(T t) {
-
-                    }
-                })
-                .subscribe(new Subscriber<T>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(T t) {
-                        AppService.getBus().post(new RecommentEvent(t));
-                    }
-                });
-    }
 }

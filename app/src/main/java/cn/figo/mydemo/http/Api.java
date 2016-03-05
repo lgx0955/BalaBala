@@ -17,7 +17,6 @@ import retrofit.http.Headers;
  * Copyright (c)Ligx All rights reserved.
  */
 public interface Api {
-//http://www.touba.cc/index.php
     @Headers({
             "Content-type: application/json"
     })

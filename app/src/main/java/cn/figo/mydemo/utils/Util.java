@@ -1,19 +1,13 @@
 package cn.figo.mydemo.utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -162,35 +156,6 @@ public class Util {
         DisplayMetrics metrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return metrics;
-    }
-
-    /**
-     * 获取版本号
-     *
-     * @return 当前应用的版本名
-     */
-    public static String getVersion(Context mContext) {
-        try {
-            PackageManager manager = mContext.getPackageManager();
-            PackageInfo info = manager.getPackageInfo(mContext.getPackageName(), 0);
-            String version = info.versionName;
-            return version;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    public static int getVersionCode(Context context) {
-        PackageInfo pinfo = null;
-        try {
-            pinfo = ((Activity) context).getPackageManager().getPackageInfo(((Activity) context).getPackageName(), PackageManager.GET_CONFIGURATIONS);
-            int versionCode = pinfo.versionCode;
-            return versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return 0;
-        }
     }
 
     /**
@@ -349,85 +314,6 @@ public class Util {
         return lst;
     }
 
-
-    public static void showAlertDialog(Context mContext, String title, String message, String str1, String str2, final OnConfirmListener onConfirmListener) {
-        new AlertDialog.Builder(mContext)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(str1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onConfirmListener.onConfirm();
-                    }
-                })
-                .setNegativeButton(str2, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onConfirmListener.onCancel();
-                    }
-                })
-                .show();
-    }
-
-
-    public static void showAlertConfirmDialog(Context mContext, String message, final OnConfirmListener onConfirmListener) {
-        new AlertDialog.Builder(mContext)
-                .setMessage(message)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onConfirmListener.onConfirm();
-                    }
-                })
-                .show();
-    }
-
-    public static void showAlertDialog(Context mContext, String message, final OnConfirmListener onConfirmListener) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(mContext)
-                .setMessage(message)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onConfirmListener.onConfirm();
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onConfirmListener.onCancel();
-                    }
-                })
-                .create();
-
-        alertDialog.show();
-    }
-
-    public static void showCustomViewAlertDialog(Context mContext, final View view, String title, String message, String str1, String str2, final OnSelectDialogListener onConfirmListener) {
-        AlertDialog alertDialog = new AlertDialog.Builder(mContext)
-                .setView(view)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(str1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onConfirmListener.onConfirm("");
-                    }
-                })
-                .setNegativeButton(str2, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onConfirmListener.onCancel();
-                    }
-                }).create();
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                ((ViewGroup) view.getParent()).removeView(view);
-            }
-        });
-        alertDialog.show();
-    }
-
     public static boolean isCellPhoneNo(String telephone) {
 
         if (telephone.length() != 11) {
@@ -470,32 +356,6 @@ public class Util {
         return f.getAbsolutePath();
     }
 
-    public static void saveMyBitmap(String bitName, Bitmap mBitmap) {
-        File f = new File("mnt/sdcard/漫画说/" + bitName + ".png");
-        try {
-            f.createNewFile();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            DebugLog.e("在保存图片时出错：" + e.toString());
-        }
-        FileOutputStream fOut = null;
-        try {
-            fOut = new FileOutputStream(f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-        try {
-            fOut.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 验证邮箱地址是否正确
@@ -536,36 +396,6 @@ public class Util {
         }
         return flag;
     }
-
-
-    //保存场景头像图片
-    public static void saveAvatarBitmap(String bitName, Bitmap mBitmap) {
-        File f = new File("mnt/sdcard/漫画说/avatar/" + bitName + ".png");
-        try {
-            f.createNewFile();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            DebugLog.e("在保存图片时出错：" + e.toString());
-        }
-        FileOutputStream fOut = null;
-        try {
-            fOut = new FileOutputStream(f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-        try {
-            fOut.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     /**
      * 获取文件夹大小

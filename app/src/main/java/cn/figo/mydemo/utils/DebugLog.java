@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by kenny on 2014/4/28.
  */
 public class DebugLog {
-    static String className = "AiPeiHuClient";
+    static String className = "BalaBala";
     static String methodName;
 
 

@@ -25,6 +25,7 @@ import com.mikepenz.actionitembadge.library.utils.UIUtil;
 import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -34,7 +35,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 import cn.figo.mydemo.R;
-import cn.figo.mydemo.app.AppService;
 import cn.figo.mydemo.app.MyApplication;
 import cn.figo.mydemo.base.baseactivity.BaseActivity;
 import cn.figo.mydemo.base.basefragment.BaseFragment;
@@ -88,7 +88,7 @@ public class IndexActivity extends BaseActivity implements NavigationView.OnNavi
     @Override
     protected void init() {
 
-        AppService.getBus().register(this);
+        EventBus.getDefault().register(this);
 
         initToolbar();
         initDrawerLayout();
@@ -316,6 +316,6 @@ public class IndexActivity extends BaseActivity implements NavigationView.OnNavi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AppService.getBus().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 }

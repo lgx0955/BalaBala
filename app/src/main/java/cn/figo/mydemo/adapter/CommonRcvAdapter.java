@@ -18,10 +18,6 @@ import android.view.ViewGroup;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * @author Jack Tony
- * @date 2015/5/17
- */
 public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //瀑布流最后1项铺满

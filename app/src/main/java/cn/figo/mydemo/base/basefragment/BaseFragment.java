@@ -5,12 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
-import com.umeng.analytics.MobclickAgent;
 
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.utils.SharePreferencesProvider;
@@ -131,31 +128,6 @@ public abstract class BaseFragment extends BaseLazyFragment {
 
     public final String TAG = this.getClass().getSimpleName();
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        ActivityTack.getInstanse().removeActivity(getActivity());
-    }
-
-    @Override
-    public void onStart() {
-//        ActivityTack.getInstanse().addActivity(getActivity());
-        super.onStart();
-    }
-
-
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart(TAG); //统计页面
-        MobclickAgent.onResume(getActivity());          //统计时长
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd(TAG); // 保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息
-        MobclickAgent.onPause(getActivity());
-    }
-
-
     Context sharedContext = null;
     private SharedPreferences preferences = null;
     protected void saveP(String key, String value) {
@@ -193,24 +165,6 @@ public abstract class BaseFragment extends BaseLazyFragment {
         preferences.edit().remove(key).commit();
     }
 
-
-    /**
-     * 更新
-     */
-    protected void update(boolean isShowLoading){
-        if (isShowLoading){
-            showLoadBar();
-        }
-    }
-
-    /**
-     * 加载
-     */
-    protected void loadmore(boolean isShowLoading) {
-        if (isShowLoading){
-            showLoadBar();
-        }
-    }
     // //////////////////////////////////////////////////////////////////////////////////////////////
     // common classes
     protected boolean isHard = false;
@@ -226,49 +180,6 @@ public abstract class BaseFragment extends BaseLazyFragment {
         if(loadingDialog != null)
             loadingDialog.dismiss();
     }
-boolean isbackground = false;
-
-    public void setIsbackgroundLoading(boolean isbackground) {
-        this.isbackground = isbackground;
-    }
-
-    public void setIsHard(boolean isHard) {
-        this.isHard = isHard;
-    }
-
-    /**
-     * 打开waiting dialog
-     */
-    public void showLoadBar() {
-//        if(loadingDialog != null)
-//            loadingDialog.dismiss();
-//        loadingDialog = new Dialog(getActivity(),R.style.tdialog);
-//        if(isHard)
-//            loadingDialog.setCanceledOnTouchOutside(false);
-//        loadingDialog.setContentView(R.layout.common_loadbar);
-//        wheel = (ProgressWheel) loadingDialog.findViewById(R.id.progress_wheel);
-//        loadingDialog.show();
-//        wheel.setProgress(0f);
-//        wheel.spin();
-//
-//        wheel.setCallback(new ProgressWheel.ProgressCallback() {
-//            @Override
-//            public void onProgressUpdate(float progress) {
-//                if (wheel.getProgress() == 1.0f) {
-//                    hideLoadBar();
-//                }
-//            }
-//        });
-//
-//        if (isbackground&&isHard) {
-//            loadingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//                @Override
-//                public void onCancel(DialogInterface dialog) {
-//                    getActivity().finish();
-//                }
-//            });
-//        }
-    }
 
     public void toast(String msg) {
         ToastHelper.showToast(msg, getActivity());
@@ -276,39 +187,6 @@ boolean isbackground = false;
 
     protected void toast(int msg_id) {
         ToastHelper.showToast(getString(msg_id), getActivity());
-    }
-
-    protected void showSnackBar(View v, String content) {
-        Snackbar.make(v, content, Snackbar.LENGTH_LONG)
-                .setAction("Action", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        toast("aaaaaa");
-                    }
-                }).show();
-    }
-
-    protected void showSnackBar(String content) {
-        ViewGroup view = (ViewGroup) getActivity().getWindow().getDecorView();
-        Snackbar.make(view.getChildAt(0), content, Snackbar.LENGTH_LONG)
-                .setAction("Action", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        toast("aaaaaa");
-                    }
-                }).show();
-    }
-
-    protected void showSnackBar(String content, View.OnClickListener listener) {
-        ViewGroup view = (ViewGroup) getActivity().getWindow().getDecorView();
-        Snackbar.make(view.getChildAt(0), content, Snackbar.LENGTH_LONG)
-                .setAction("Action", listener).show();
-    }
-
-    protected void showSnackBar(String content, String action, View.OnClickListener listener) {
-        ViewGroup view = (ViewGroup) getActivity().getWindow().getDecorView();
-        Snackbar.make(view.getChildAt(0), content, Snackbar.LENGTH_LONG)
-                .setAction(action, listener).show();
     }
 
     /**
