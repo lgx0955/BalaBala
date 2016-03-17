@@ -1,6 +1,6 @@
 # BalaBala
 
-代码有点乱 最近忙着找工作 以后有时间再整理
+下期预告: 番剧详情 播放 直播 弹幕~- ( ゜- ゜)つロ 乾杯~ - 
 
 <img src="/screenshot/device-2016-03-02-132921.png" width="250px" />
 <img src="/screenshot/device-2016-03-02-132958.png" width="250px" />
