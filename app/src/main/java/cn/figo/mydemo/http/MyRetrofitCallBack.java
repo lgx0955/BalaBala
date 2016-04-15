@@ -114,7 +114,7 @@ public class MyRetrofitCallBack<T extends ResponseBaseBean>  implements Callback
                         else
                             cache.setExpireTime(-1l);
                         MyApplication.liteOrmDb.save(cache);
-                    }         
+                    }
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
