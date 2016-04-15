@@ -121,7 +121,11 @@ public class BangumiFragment extends BaseFragment {
             public void onDo(BangumiIndexBean response) {
                 super.onDo(response);
                 bangumiIndexAdapter.clear();
-                bangumiIndexAdapter.addAll(banguminIndexHeaderBean);
+
+//                bangumiIndexAdapter.add(banguminIndexHeaderBean.getResult().getLatestUpdate());
+//                bangumiIndexAdapter.add(banguminIndexHeaderBean.getResult().getRecommendCategory());
+//                bangumiIndexAdapter.add(banguminIndexHeaderBean.getResult().getCategories());
+
                 bangumiIndexAdapter.addAll(response.getList());
             }
 
@@ -144,7 +148,6 @@ public class BangumiFragment extends BaseFragment {
             public void onDo(BanguminIndexHeaderBean response) {
                 super.onDo(response);
                 getBangumi(response);
-//                bangumiIndexAdapter.addAll(response);
             }
 
             @Override

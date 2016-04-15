@@ -1,5 +1,6 @@
 package cn.figo.mydemo.viewholder;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,7 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.bean.BangumiIndexBean;
-import cn.figo.mydemo.ui.activity.FileListActivity;
+import cn.figo.mydemo.ui.activity.BangumiDetailActivity;
 import cn.figo.mydemo.utils.DensityUtils;
 import cn.figo.mydemo.utils.LPhone;
 
@@ -38,9 +39,9 @@ public class BangumiIndexViewHolder extends BaseViewHolder<BangumiIndexBean.List
     }
 
     @Override
-    public void setData(BangumiIndexBean.ListEntity listEntity) {
+    public void setData(final BangumiIndexBean.ListEntity listEntity) {
         int screenWidth = LPhone.getScreenWidth(getContext());
-        int myWidth = (screenWidth - DensityUtils.dip2px(getContext(),24)) / 2;
+        int myWidth = (screenWidth - DensityUtils.dip2px(getContext(),12)) / 2;
         float ratio = Float.parseFloat(listEntity.getWidth()+"")/Float.parseFloat(listEntity.getHeight()+"");
         int height = (int) (myWidth / ratio +0.5);
         bangumi2Icon.setLayoutParams(new LinearLayout.LayoutParams(myWidth, height));
@@ -51,7 +52,9 @@ public class BangumiIndexViewHolder extends BaseViewHolder<BangumiIndexBean.List
         bangumi2Container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                overlay(FileListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(BangumiDetailActivity.BANGUMI_SPID_EXTRA,listEntity.getSpid()+"");
+                overlay(BangumiDetailActivity.class,bundle);
             }
         });
     }

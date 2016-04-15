@@ -16,16 +16,15 @@
 
 package cn.figo.mydemo.ui.activity;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -39,29 +38,33 @@ import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.ResponseBody;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.zip.DataFormatException;
 
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.app.Settings;
+import cn.figo.mydemo.bean.AidBean;
 import cn.figo.mydemo.content.RecentMediaStorage;
+import cn.figo.mydemo.http.RetrofitClientManager;
 import cn.figo.mydemo.ui.fragment.TracksFragment;
-import cn.figo.mydemo.utils.DensityUtils;
-import cn.figo.mydemo.utils.VideoPlayerUtil;
 import cn.figo.mydemo.widget.media.AndroidMediaController;
 import cn.figo.mydemo.widget.media.IjkVideoView;
 import cn.figo.mydemo.widget.media.MeasureHelper;
@@ -71,7 +74,6 @@ import master.flame.danmaku.danmaku.loader.IllegalDataException;
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
-import master.flame.danmaku.danmaku.model.IDanmakus;
 import master.flame.danmaku.danmaku.model.IDisplayer;
 import master.flame.danmaku.danmaku.model.android.BaseCacheStuffer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
@@ -81,12 +83,20 @@ import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import master.flame.danmaku.danmaku.util.IOUtils;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.ITrackInfo;
 
 
 public class VideoActivity extends AppCompatActivity implements TracksFragment.ITrackHolder {
     private static final String TAG = "VideoActivity";
+
+    public static final String EXTRA_URL = "videoPath";
+    public static final String EXTRA_AID = "aidbean";
+    AidBean aidBean;
 
     private String mVideoPath;
     private Uri    mVideoUri;
@@ -100,6 +110,11 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
 
     private Settings mSettings;
     private boolean mBackPressed;
+
+    ImageView biliAnim;
+    AnimationDrawable anim;
+
+    String danmaku_path;
 
     public static Intent newIntent(Context context, String videoPath, String videoTitle) {
         Intent intent = new Intent(context, VideoActivity.class);
@@ -117,58 +132,69 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         mSettings = new Settings(this);
+        biliAnim = (ImageView) findViewById(R.id.bili_anim);
+        anim = (AnimationDrawable) biliAnim.getBackground();
+        anim.start();
+        try{
+            aidBean = new Gson().fromJson(getIntent().getStringExtra(EXTRA_AID),AidBean.class);
+        }catch (Exception e){e.printStackTrace();}
+
+        if (aidBean!=null){
+            mVideoPath = aidBean.getSrc();
+            danmaku_path = aidBean.getCid();
+        }
 
 //      handle arguments
-        mVideoPath = getIntent().getStringExtra("videoPath");
+//        mVideoPath = getIntent().getStringExtra(EXTRA_URL);
+//
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//            String scheme = mVideoUri.getScheme();
+//            if (TextUtils.isEmpty(scheme)) {
+//                Log.e(TAG, "Null unknown ccheme\n");
+//                finish();
+//                return;
+//            }
+//            if (scheme.equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
+//                mVideoPath = mVideoUri.getPath();
+//            } else if (scheme.equals(ContentResolver.SCHEME_CONTENT)) {
+//                Log.e(TAG, "Can not resolve content below Android-ICS\n");
+//                finish();
+//                return;
+//            } else {
+//                Log.e(TAG, "Unknown scheme " + scheme + "\n");
+//                finish();
+//                return;
+//            }
+//        }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            String scheme = mVideoUri.getScheme();
-            if (TextUtils.isEmpty(scheme)) {
-                Log.e(TAG, "Null unknown ccheme\n");
-                finish();
-                return;
-            }
-            if (scheme.equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
-                mVideoPath = mVideoUri.getPath();
-            } else if (scheme.equals(ContentResolver.SCHEME_CONTENT)) {
-                Log.e(TAG, "Can not resolve content below Android-ICS\n");
-                finish();
-                return;
-            } else {
-                Log.e(TAG, "Unknown scheme " + scheme + "\n");
-                finish();
-                return;
-            }
-        }
-
-        Intent intent = getIntent();
-        String intentAction = intent.getAction();
-        if (!TextUtils.isEmpty(intentAction)) {
-            if (intentAction.equals(Intent.ACTION_VIEW)) {
-                mVideoPath = intent.getDataString();
-            } else if (intentAction.equals(Intent.ACTION_SEND)) {
-                mVideoUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    String scheme = mVideoUri.getScheme();
-                    if (TextUtils.isEmpty(scheme)) {
-                        Log.e(TAG, "Null unknown ccheme\n");
-                        finish();
-                        return;
-                    }
-                    if (scheme.equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
-                        mVideoPath = mVideoUri.getPath();
-                    } else if (scheme.equals(ContentResolver.SCHEME_CONTENT)) {
-                        Log.e(TAG, "Can not resolve content below Android-ICS\n");
-                        finish();
-                        return;
-                    } else {
-                        Log.e(TAG, "Unknown scheme " + scheme + "\n");
-                        finish();
-                        return;
-                    }
-                }
-            }
-        }
+//        Intent intent = getIntent();
+//        String intentAction = intent.getAction();
+//        if (!TextUtils.isEmpty(intentAction)) {
+//            if (intentAction.equals(Intent.ACTION_VIEW)) {
+//                mVideoPath = intent.getDataString();
+//            } else if (intentAction.equals(Intent.ACTION_SEND)) {
+//                mVideoUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+//                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                    String scheme = mVideoUri.getScheme();
+//                    if (TextUtils.isEmpty(scheme)) {
+//                        Log.e(TAG, "Null unknown ccheme\n");
+//                        finish();
+//                        return;
+//                    }
+//                    if (scheme.equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
+//                        mVideoPath = mVideoUri.getPath();
+//                    } else if (scheme.equals(ContentResolver.SCHEME_CONTENT)) {
+//                        Log.e(TAG, "Can not resolve content below Android-ICS\n");
+//                        finish();
+//                        return;
+//                    } else {
+//                        Log.e(TAG, "Unknown scheme " + scheme + "\n");
+//                        finish();
+//                        return;
+//                    }
+//                }
+//            }
+//        }
 
         if (!TextUtils.isEmpty(mVideoPath)) {
             new RecentMediaStorage(this).saveUrlAsync(mVideoPath);
@@ -200,18 +226,23 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         mVideoView.setHudView(mHudView);
 
         mVideoView.toggleAspectRatio();
-
-        if (mVideoPath != null)
-            mVideoView.setVideoPath(mVideoPath);
-        else if (mVideoUri != null)
-            mVideoView.setVideoURI(mVideoUri);
-        else {
-            Log.e(TAG, "Null Data Source\n");
-            finish();
-            return;
-        }
-
+        //用webview加载http://live.bilibili.com/148  从返回的html数据中通过正则找到直播地址
+//        mVideoPath = "http://wshls.acgvideo.com/live/live_682508_3859786/playlist.m3u8";
+//        mVideoPath = "http://hdl3a.douyutv.com/live/56040rC6zZixldgm.flv";
+//        mVideoPath = "http://cn-gdfs12-dx.acgvideo.com/vg4/e/c8/5635675.mp4?expires=1457698500&ssig=2kGcD42pv29rg0_2QchdlQ&oi=1903027322&internal=1&rate=0";
+//        3538470
+        mVideoView.setVideoPath(mVideoPath);
+//        if (mVideoPath != null)
+//            mVideoView.setVideoPath(mVideoPath);
+//        else if (mVideoUri != null)
+//            mVideoView.setVideoURI(mVideoUri);
+//        else {
+//            Log.e(TAG, "Null Data Source\n");
+//            finish();
+//            return;
+//        }
         initDanmaku();
+
     }
     public void initDanmaku() {
         // 设置最大显示行数
@@ -229,57 +260,37 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
 //        .setCacheStuffer(new BackgroundCacheStuffer())  // 绘制背景使用BackgroundCacheStuffer
                 .setMaximumLines(maxLinesPair)
                 .preventOverlapping(overlappingEnablePair);
+
         if (mDanmakuView != null) {
-            mParser = createParser(getResources().openRawResource(R.raw.comments));
-            mDanmakuView.setCallback(new master.flame.danmaku.controller.DrawHandler.Callback() {
-                @Override
-                public void updateTimer(DanmakuTimer timer) {
-                }
-
-                @Override
-                public void drawingFinished() {
-
-                }
-
-                @Override
-                public void danmakuShown(BaseDanmaku danmaku) {
-//                    Log.d("DFM", "danmakuShown(): text=" + danmaku.text);
-                }
-
-                @Override
-                public void prepared() {
-                    mDanmakuView.start();
-                }
-            });
-//            mDanmakuView.setOnDanmakuClickListener(new IDanmakuView.OnDanmakuClickListener() {
-//                @Override
-//                public void onDanmakuClick(BaseDanmaku latest) {
-//                    Log.d("DFM", "onDanmakuClick text:" + latest.text);
-//                    mMediaController.setVisibility(View.VISIBLE);
-//                    mVideoView.performClick();
-//                }
-//
-//                @Override
-//                public void onDanmakuClick(IDanmakus danmakus) {
-//                    Log.d("DFM", "onDanmakuClick danmakus size:" + danmakus.size());
-//                    mMediaController.setVisibility(View.VISIBLE);
-//                }
-//            });
-            mDanmakuView.prepare(mParser, danmakuContext);
-            mDanmakuView.showFPS(false);
-            mDanmakuView.enableDanmakuDrawingCache(true);
-//            ((View) mDanmakuView).setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View view) {
-//                    mMediaController.setVisibility(View.VISIBLE);
-//                }
-//            });
-
+            if (aidBean!=null)
+                getVideoDanmakuPath(aidBean.getCid());
+            else
+                getVideoDanmaku("5635675");
         }
 
 
-        mVideoView.start();
+//        mVideoView.start();
+//        mVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(IMediaPlayer mp) {
+//
+//            }
+//        });
+//        mVideoView.getmMediaPlayer().setOnBufferingUpdateListener(new IMediaPlayer.OnBufferingUpdateListener() {
+//            @Override
+//            public void onBufferingUpdate(IMediaPlayer mp, int percent) {
+//                initDanmaku();
+//            }
+//        });
+//        mMediaController.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mToastTextView.setText("Aaaa");
+//                mToastTextView.setVisibility(View.VISIBLE);
+//                mMediaController.show(10000);
+//            }
+//        },2000);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -453,7 +464,6 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         IDataSource<?> dataSource = loader.getDataSource();
         parser.load(dataSource);
         return parser;
-
     }
 
     private SpannableStringBuilder createSpannable(Drawable drawable) {
@@ -466,4 +476,135 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
         return spannableStringBuilder;
     }
 
+
+    public void getVideoDanmaku(String danmaku_id) {
+        RetrofitClientManager.getAsyn(RetrofitClientManager.api.getDanmaku(danmaku_id), new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                InputStream stream = null;
+                try {
+                    stream = new ByteArrayInputStream(CompressionTools.decompressXML(response.body().bytes()));
+                } catch (DataFormatException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    mParser = createParser(stream);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mDanmakuView.setCallback(new master.flame.danmaku.controller.DrawHandler.Callback() {
+                    @Override
+                    public void updateTimer(DanmakuTimer timer) {
+                    }
+
+                    @Override
+                    public void drawingFinished() {
+
+                    }
+
+                    @Override
+                    public void danmakuShown(BaseDanmaku danmaku) {
+                        Log.d("DFM", "danmakuShown(): text=" + danmaku.text);
+                    }
+
+                    @Override
+                    public void prepared() {
+                        mVideoView.start();
+                        mVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+                            @Override
+                            public void onPrepared(IMediaPlayer mp) {
+                                mDanmakuView.start();
+                                findViewById(R.id.video_start).setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                });
+                mDanmakuView.prepare(mParser, danmakuContext);
+                mDanmakuView.showFPS(false);
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getVideoDanmakuPath(String danmaku_path) {
+        Request request = new Request.Builder()
+                .url(danmaku_path)
+                .get()
+                .build();
+        RetrofitClientManager.httpClient.newCall(request).enqueue(new com.squareup.okhttp.Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(com.squareup.okhttp.Response response) throws IOException {
+                InputStream stream = null;
+                try {
+                    stream = new ByteArrayInputStream(CompressionTools.decompressXML(response.body().bytes()));
+                } catch (DataFormatException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    mParser = createParser(stream);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mDanmakuView.setCallback(new master.flame.danmaku.controller.DrawHandler.Callback() {
+                    @Override
+                    public void updateTimer(DanmakuTimer timer) {
+                    }
+
+                    @Override
+                    public void drawingFinished() {
+
+                    }
+
+                    @Override
+                    public void danmakuShown(BaseDanmaku danmaku) {
+                        Log.d("DFM", "danmakuShown(): text=" + danmaku.text);
+                    }
+
+                    @Override
+                    public void prepared() {
+                        mVideoView.start();
+                        mVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+                            @Override
+                            public void onPrepared(IMediaPlayer mp) {
+                                mDanmakuView.start();
+                                findViewById(R.id.video_start).setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                });
+                mDanmakuView.prepare(mParser, danmakuContext);
+                mDanmakuView.showFPS(false);
+
+
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mVideoView.getmMediaPlayer().setOnSeekCompleteListener(new IMediaPlayer.OnSeekCompleteListener() {
+                            @Override
+                            public void onSeekComplete(IMediaPlayer mp) {
+
+                                mDanmakuView.seekTo(mp.getCurrentPosition());
+                            }
+                        });
+                    }
+                },5000);
+            }
+        });
+    }
 }

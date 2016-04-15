@@ -12,9 +12,6 @@
         android:layout_height="match_parent"
         android:background="#0099cc">
 
-
-
-
         <cn.figo.mydemo.widget.media.IjkVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
@@ -25,6 +22,183 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
+
+        <RelativeLayout
+            android:id="@+id/video_start"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/bilibg"
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/bili_anim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:background="@anim/bili_anim" />
+
+            <TextView
+                android:id="@+id/video_start_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="初始化播放器..."
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="4dp"
+                android:layout_marginBottom="4dp"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/video_title_bar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_gravity="top"-->
+            <!--android:clickable="true"-->
+            <!--android:background="@color/video_background"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:visibility="visible">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/video_back"-->
+                <!--android:layout_width="27dp"-->
+                <!--android:layout_height="27dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:background="@drawable/back"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_title"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:maxLines="1"-->
+                <!--android:singleLine="true"-->
+                <!--android:text=""-->
+                <!--android:textColor="#FFFFFF"-->
+                <!--android:textSize="18sp"/>-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/video_hd"-->
+                <!--android:layout_width="27dp"-->
+                <!--android:layout_height="27dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="60dp"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:background="@drawable/ic_high_quality_white_48dp"/>-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/video_danmaku"-->
+                <!--android:layout_width="27dp"-->
+                <!--android:layout_height="27dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:background="@drawable/ic_repeat_white_48dp"/>-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/video_controller_bar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:background="@color/video_background"-->
+            <!--android:gravity="center"-->
+            <!--android:clickable="true"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:visibility="visible">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/iv_play"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:background="@drawable/video_play"/>-->
+
+            <!--<SeekBar-->
+                <!--android:id="@+id/sb_rate"-->
+                <!--style="?android:attr/progressBarStyleHorizontal"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_rate"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:text="00:00 / 00:00"-->
+                <!--android:textColor="@color/white"/>-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_brightness"-->
+            <!--android:layout_width="120dp"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_gravity="center_vertical|left"-->
+            <!--android:layout_marginLeft="40dp"-->
+            <!--android:orientation="vertical"-->
+            <!--android:visibility="gone">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:background="@color/video_background"-->
+                <!--android:gravity="bottom|center_horizontal"-->
+                <!--android:text="亮度"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="18sp"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_brightness"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:background="@color/video_background"-->
+                <!--android:gravity="center"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="30sp"-->
+                <!--tools:text="66%"/>-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_volume"-->
+            <!--android:layout_width="120dp"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_gravity="center_vertical|right"-->
+            <!--android:layout_marginRight="40dp"-->
+            <!--android:orientation="vertical"-->
+            <!--android:visibility="gone">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:background="@color/video_background"-->
+                <!--android:gravity="bottom|center_horizontal"-->
+                <!--android:text="音量"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="18sp"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_volume"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:background="@color/video_background"-->
+                <!--android:gravity="center"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="30sp"-->
+                <!--tools:text="66%"/>-->
+
+        <!--</LinearLayout>-->
+
+
         <TextView
             android:id="@+id/toast_text_view"
             android:layout_width="wrap_content"

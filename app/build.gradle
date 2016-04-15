@@ -35,7 +35,16 @@ android {
     productFlavors {
     }
 }
-
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile fileTree(dir: 'libs', include: '*.jar')
@@ -89,4 +98,7 @@ dependencies {
     compile 'tv.danmaku.ijk.media:ijkplayer-exo:0.4.5.1'
     compile 'com.github.ctiao:dfm:0.4.1'
     compile 'com.android.support:preference-v7:23.2.0'
+
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+
 }

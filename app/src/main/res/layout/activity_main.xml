@@ -35,7 +35,16 @@
                         android:layout_height="?attr/actionBarSize"
                         />
                 </android.support.v7.widget.Toolbar>
-
+                <com.quinny898.library.persistentsearch.SearchBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/searchbox"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginTop="-6dp"
+                    android:layout_marginLeft="-6dp"
+                    android:layout_marginRight="-6dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true" />
                 <android.support.design.widget.TabLayout
                     android:id="@+id/home_tablayout"
                     android:layout_width="match_parent"
@@ -55,16 +64,6 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 />
 
-            <com.quinny898.library.persistentsearch.SearchBox
-                android:layout_width="wrap_content"
-                android:id="@+id/searchbox"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginTop="-6dp"
-                android:layout_marginLeft="-6dp"
-                android:layout_marginRight="-6dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true" />
         </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 

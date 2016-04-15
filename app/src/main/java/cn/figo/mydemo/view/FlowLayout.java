@@ -13,8 +13,8 @@ public class FlowLayout extends ViewGroup {
     // 记录当前有多少行
     private List<Line> mLines = new ArrayList<Line>();
     private Line mCurrentLine;
-    private int horizontalSpace = 10;
-    private int verticalSpace   = 10;
+    private int horizontalSpace = 0;
+    private int verticalSpace   = 0;
 
 
     public void setSpace(int horizontalSpace, int verticalSpace) {

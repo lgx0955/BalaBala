@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="64dp"
+    android:layout_height="40dp"
+    android:padding="4dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="64dp"
+        android:layout_height="40dp"
+        app:cardElevation="3dp"
+        app:cardCornerRadius="0dp">
+        <TextView
+            android:id="@+id/episodes_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/font_medium"
+            android:gravity="center"
+            android:text="1"/>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.DataBase;
-import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
 
@@ -23,7 +22,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        mRefWatcher = LeakCanary.install(this);
+//        mRefWatcher = LeakCanary.install(this);
         mContext = getApplicationContext();
 
         liteOrmDb = LiteOrm.newCascadeInstance(mContext, "liteorm.db");

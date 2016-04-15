@@ -5,6 +5,7 @@ import com.squareup.okhttp.OkHttpClient;
 import java.util.concurrent.TimeUnit;
 
 import retrofit.Call;
+import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
@@ -56,7 +57,7 @@ public class RetrofitClientManager {
     public static OkHttpClient httpClient;
     public static Retrofit getRetrofit() {
         if (retrofit == null){
-            OkHttpClient httpClient = new OkHttpClient();
+            httpClient = new OkHttpClient();
             httpClient.setReadTimeout(15, TimeUnit.SECONDS);
             httpClient.setConnectTimeout(15, TimeUnit.SECONDS);
             retrofit = new Retrofit.Builder()
@@ -75,4 +76,15 @@ public class RetrofitClientManager {
         responseCall.enqueue(myRetrofitCallBack);
     }
 
+    public static <T> void getSignAsyn(Call<T> responseCall, MyRetrofitCallBack myRetrofitCallBack) {
+        cachePolicy = myRetrofitCallBack.getCachePolicy();
+        retrofit.client().interceptors().clear();
+        retrofit.client().interceptors().add(new GetMeThodInterceptor(cachePolicy, myRetrofitCallBack,responseCall));
+        retrofit.client().interceptors().add(new SignInterceptor());
+        responseCall.enqueue(myRetrofitCallBack);
+    }
+
+    public static <T> void getAsyn(Call<T> responseCall, Callback callback) {
+        responseCall.enqueue(callback);
+    }
 }

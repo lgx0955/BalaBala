@@ -42,6 +42,7 @@ import cn.figo.mydemo.event.RequestSearchEvent;
 import cn.figo.mydemo.ui.fragment.BangumiFragment;
 import cn.figo.mydemo.ui.fragment.CategoryFragment;
 import cn.figo.mydemo.ui.fragment.DiscoverFragment;
+import cn.figo.mydemo.ui.fragment.LiveFragment;
 import cn.figo.mydemo.ui.fragment.RecommendFragment;
 
 public class IndexActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,Toolbar.OnMenuItemClickListener {
@@ -98,7 +99,7 @@ public class IndexActivity extends BaseActivity implements NavigationView.OnNavi
 
         //添加fragment
         mFragments = new ArrayList<>();
-        mFragments.add(new RecommendFragment());
+        mFragments.add(new LiveFragment());
         mFragments.add(new BangumiFragment());
         mFragments.add(new RecommendFragment());
         mFragments.add(new CategoryFragment());
@@ -112,7 +113,7 @@ public class IndexActivity extends BaseActivity implements NavigationView.OnNavi
         homeTablayout.setupWithViewPager(homeViewpager);
 
         homeViewpager.setCurrentItem(2);
-
+//        homeViewpager.setOffscreenPageLimit(3);
     }
     /**
      * 初始化toolbar
