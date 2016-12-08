@@ -50,8 +50,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        aq = new AQuery(this);
         mContext = this;
 
         TAG_LOG = this.getClass().getSimpleName();

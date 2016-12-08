@@ -1,7 +1,5 @@
 package cn.figo.mydemo.danmaku;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 
 import java.io.DataInputStream;
@@ -75,73 +73,88 @@ public class BiliDanmakuClient {
 
         @Override
         public void run() {
-            byte[] buf = new byte[1024];
+//            byte[] buf = new byte[1024];
             long lastkeepTime = System.currentTimeMillis();
             while (alive) {
                 if (client == null) {
                     openSocket();
                 }
                 try {
-                    if (input.available() <= 0) {
-                        if (System.currentTimeMillis() - lastkeepTime >= 30000) {
-                            try {
-                                output.write(new byte[]{0x01, 0x02, 0x00, 0x04});
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            lastkeepTime = System.currentTimeMillis();
+                    if (System.currentTimeMillis() - lastkeepTime >= 30000) {
+                        try {
+                            output.write(new byte[]{0x00,0x00,0x00,0x10,0x00,0x10,0x00,0x01,0x00,0x00,0x00,0x02,0x00,0x00,0x00,0x01});
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                        lastkeepTime = System.currentTimeMillis();
+                    }
+                    int available = input.available();
+
+                    if (available==0){
+//                        System.out.println("====="+available);
                         sleep(1000);
                         continue;
+                    }else {
+//                        int type = input.read();
+//                        System.out.println("type ====="+type);
+                        byte[] buf = new byte[available];
+                        input.skip(16);
+                        int resulet = input.read(buf,0,available);
+                        String s = new String(buf,0,available);
+                        System.out.println("     ======"+s);
+                        incomingDanmakuCallback.incomingDanmaku(s);
+//                        incomingDanmakuCallback.incomingDanmaku("{\"info\":[[0,1,25,16777215,1457530865,\"1457530846\",0,\"c5c472fa\",0],\"B克拉收好\",[5771796,\"尛鑫鑫\",0,0,0],[1,\"姬控\",\"请叫我毒姬\",44592,9953448],[4,958754],[]],\"cmd\":\"DANMU_MSG\"}");
+//                        sleep(1000);
                     }
-                    short type = input.readShort();
-                    if (type == -1) {
-                        closeSocket();
-                        continue;
-                    }
-                    switch (type) {
-                        case 1:
-                            int peoplenum = input.readInt();
-                            Log.i(TAG, "peoplenum=" + peoplenum);
-                            break;
-                        case 4:
-                            short leftsize = input.readShort();
-                            leftsize -= 4;
-                            String s;
-                            if (leftsize < 1024) {
-                                input.read(buf, 0, leftsize);
-                                s = new String(buf, 0, leftsize);
-                            } else {
-                                input.read(buf, 0, leftsize);
-                                s = new String(buf, 0, leftsize);
-                            }
+//                    short type = input.readShort();
+//                    if (type == -1) {
+//                        closeSocket();
+//                        continue;
+//                    }
 
-                            System.out.println("zzzzzz"+s);
-                            incomingDanmakuCallback.incomingDanmaku(s);
-
-//                            Danmaku danmaku = new Danmaku();
-//                            BaseDanmaku danmaku = mContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
-//                            danmaku.text = s;
-//                            danmaku.padding = 5;
-//                            danmaku.priority = 0;  // 可能会被各种过滤器过滤并隐藏显示
-//                            danmaku.textColor = Color.RED;
-//                            danmaku.textShadowColor = Color.WHITE;
-//                            danmaku.borderColor = Color.GREEN;
-//
-//                            if (danmaku != null) {
-////                                SimpleTextDanmaku danmaku = new SimpleTextDanmaku(s, 0);
-//                                try {
-//                                    incomingDanmakuCallback.incomingDanmaku(danmaku);
-//                                } catch (Throwable throwable) {
-//                                    throwable.printStackTrace();
-//                                }
+//                    System.out.println("==============3");
+//                    switch (type) {
+//                        case 1:
+//                            int peoplenum = input.readInt();
+//                            Log.i(TAG, "peoplenum=" + peoplenum);
+//                            break;
+//                        case 4:
+//                            short leftsize = input.readShort();
+//                            leftsize -= 4;
+//                            String s;
+//                            if (leftsize < 1024) {
+//                                input.read(buf, 0, leftsize);
+//                                s = new String(buf, 0, leftsize);
 //                            } else {
-////                                Log.e(TAG, "unknowDanmakujson=aaaaaa" + s);
+//                                input.read(buf, 0, leftsize);
+//                                s = new String(buf, 0, leftsize);
 //                            }
-                            break;
-                        default:
-                            Log.e(TAG, "!!!!!!!!!!!!wtftype=" + type);
-                    }
+//
+//                            incomingDanmakuCallback.incomingDanmaku(s);
+//
+////                            Danmaku danmaku = new Danmaku();
+////                            BaseDanmaku danmaku = mContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
+////                            danmaku.text = s;
+////                            danmaku.padding = 5;
+////                            danmaku.priority = 0;  // 可能会被各种过滤器过滤并隐藏显示
+////                            danmaku.textColor = Color.RED;
+////                            danmaku.textShadowColor = Color.WHITE;
+////                            danmaku.borderColor = Color.GREEN;
+////
+////                            if (danmaku != null) {
+//////                                SimpleTextDanmaku danmaku = new SimpleTextDanmaku(s, 0);
+////                                try {
+////                                    incomingDanmakuCallback.incomingDanmaku(danmaku);
+////                                } catch (Throwable throwable) {
+////                                    throwable.printStackTrace();
+////                                }
+////                            } else {
+//////                                Log.e(TAG, "unknowDanmakujson=aaaaaa" + s);
+////                            }
+//                            break;
+//                        default:
+//                            Log.e(TAG, "!!!!!!!!!!!!wtftype=" + type);
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     break;
@@ -153,7 +166,7 @@ public class BiliDanmakuClient {
         private boolean openSocket() {
             try {
                 try {
-                    client = new Socket("livecmt-1.bilibili.com", 88);
+                    client = new Socket("dm.live.bilibili.com", 788);
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                     client = null;
@@ -163,22 +176,14 @@ public class BiliDanmakuClient {
                     return false;
                 }
                 output = new DataOutputStream(client.getOutputStream());
-                output.write(new byte[]{0x01, 0x01, 0x00, 0x0c, (byte) (roomID >> 24), (byte) (roomID >> 16), (byte) (roomID >> 8), (byte) roomID,
-                        0x00, 0x00, 0x00, 0x00});
+                byte[] head = new byte[]{0x00,0x00,0x00,0x00,0x00,0x10,0x00,0x01,0x00,0x00,0x00,0x07,0x00,0x00,0x00,0x01};
+                Long uid = (long) Math.ceil(100000000000000d + 200000000000000d * Math.random());
+                byte[] body = gson.toJson(new RoomMetaBean(roomID,uid)).toString().getBytes();
+                head[3] = (byte) (head.length+body.length);
+                output.write(head);
+                output.write(body);
+                output.write(new byte[]{0x00,0x00,0x00,0x10,0x00,0x10,0x00,0x01,0x00,0x00,0x00,0x02,0x00,0x00,0x00,0x01});
                 input = new DataInputStream(client.getInputStream());
-
-//                ILoader loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI);
-//                try {
-//                    loader.load(s);
-//                } catch (IllegalDataException e) {
-//                    e.printStackTrace();
-//                }
-//                BaseDanmakuParser parser = new BiliDanmukuParser();
-//
-//                IDataSource<?> dataSource = loader.getDataSource();
-//                parser.load(dataSource);
-//                svDanmaku.prepare(parser, danmakuContext);
-
 
             } catch (IOException e) {
                 e.printStackTrace();

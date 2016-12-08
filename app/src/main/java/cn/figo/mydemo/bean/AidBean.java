@@ -14,9 +14,18 @@ public class AidBean extends BaseBean{
      * src : http://cn-gdjm2-dx.acgvideo.com/vg20/5/2c/5635675.mp4?expires=1457703000&ssig=GfG42KVjgeF6yNSEIy_6uA&oi=2005029599&internal=1&rate=0
      */
 
+    private String aid;
     private String img;
     private String cid;
     private String src;
+
+    public String getAid() {
+        return aid;
+    }
+
+    public void setAid(String aid) {
+        this.aid = aid;
+    }
 
     public void setImg(String img) {
         this.img = img;

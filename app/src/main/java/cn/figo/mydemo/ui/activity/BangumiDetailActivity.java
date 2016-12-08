@@ -11,18 +11,19 @@ import com.bumptech.glide.Glide;
 import butterknife.Bind;
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.base.baseactivity.BaseHeadActivity;
-import cn.figo.mydemo.bean.AidBean;
+import cn.figo.mydemo.bean.AvBean;
 import cn.figo.mydemo.bean.BangumiDetailBean;
 import cn.figo.mydemo.http.CachePolicy;
 import cn.figo.mydemo.http.MyRetrofitCallBack;
 import cn.figo.mydemo.http.RetrofitClientManager;
+import cn.figo.mydemo.http.api.BangumiPlayUrlService;
 import cn.figo.mydemo.utils.DensityUtils;
 import cn.figo.mydemo.utils.FlowLayout;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.CropTransformation;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class BangumiDetailActivity extends BaseHeadActivity {
 
@@ -46,14 +47,14 @@ public class BangumiDetailActivity extends BaseHeadActivity {
         sp_id = getIntent().getStringExtra(BANGUMI_SPID_EXTRA);
 
         getBangumiDetail(sp_id);
-
-        setIvLeftOpt(R.drawable.ic_arrow_back_black);
-        setLeftOptListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        getBangumiVideoDetail("");
+//        setIvLeftOpt(R.drawable.ic_arrow_back_black);
+//        setLeftOptListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
     }
 
     public void getBangumiDetail(String sp_id) {
@@ -92,19 +93,51 @@ public class BangumiDetailActivity extends BaseHeadActivity {
             }
         });
     }
-
-    public void getBangumiVideoDetail(String aid){
-        RetrofitClientManager.getAsyn(RetrofitClientManager.api.getVideoPath(aid, "1"), new Callback<AidBean>() {
+String cid = "";
+    public void getBangumiVideoDetail(final String aid){
+//        RetrofitClientManager.getAsyn(RetrofitClientManager.api.getVideoPath(aid, "1"), new Callback<AidBean>() {
+//            @Override
+//            public void onResponse(Response<AidBean> response, Retrofit retrofit) {
+//                hideLoadingDialog();
+//                Bundle bundle = new Bundle();
+////                response.body().toString()+
+//                bundle.putString(VideoActivity.EXTRA_AID,aid);
+//                overlay(VideoActivity.class,bundle);
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
+//        cid = episodesEntity.get();
+        System.out.println("======ttttt");
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://bangumi.bilibili.com")
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
+        retrofit.create(BangumiPlayUrlService.class).getPlayUrl().enqueue(new retrofit2.Callback<AvBean>() {
             @Override
-            public void onResponse(Response<AidBean> response, Retrofit retrofit) {
+            public void onResponse(Call<AvBean> call, retrofit2.Response<AvBean> response) {
+//                AvBean.VideoEntity videoEntity = response.body().getVideo();
+//                .getDurl().get(0).getBackup_url().getUrl().size()
+                AvBean avBean = response.body();
+                System.out.println("======++++"+avBean.toString());
+
                 hideLoadingDialog();
                 Bundle bundle = new Bundle();
-                bundle.putString(VideoActivity.EXTRA_AID,response.body().toString());
+//                response.body().toString()+
+
+                bundle.putString("danmaku_path","http://comment.bilibili.com/"+cid+".xml");
+                bundle.putString("urlpath","concat://:http://cn-gdgz3-cmcc-v-01.acgvideo.com/vg5/0/ed/11472663-1.flv?expires=1480376400&ssig=r66nHhzi-ecpPrSdogKEYw&oi=3085493208&rate=236900&dynamic=1"
+                                                +"|http://cn-gdgz3-cmcc-v-01.acgvideo.com/vg5/0/ed/11472663-2.flv?expires=1480376400&ssig=PDy-op_I5U5WxiouiwIo4g&oi=3085493208&rate=236900&dynamic=1"
+                                                +"|http://cn-gdgz3-cmcc-v-01.acgvideo.com/vg5/0/ed/11472663-3.flv?expires=1480376400&ssig=EEvZ38Qpf7MBcsTqMHLNhA&oi=3085493208&rate=236900&dynamic=1"
+                                                +"|http://cn-gdgz3-cmcc-v-01.acgvideo.com/vg5/0/ed/11472663-4.flv?expires=1480376400&ssig=N44Rweh8gGgAuDLjA4mFzA&oi=3085493208&rate=236900&dynamic=1");
                 overlay(VideoActivity.class,bundle);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<AvBean> call, Throwable t) {
                 t.printStackTrace();
             }
         });

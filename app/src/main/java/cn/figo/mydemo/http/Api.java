@@ -1,8 +1,5 @@
 package cn.figo.mydemo.http;
 
-
-import com.squareup.okhttp.ResponseBody;
-
 import cn.figo.mydemo.bean.AidBean;
 import cn.figo.mydemo.bean.BangumiDetailBean;
 import cn.figo.mydemo.bean.BangumiIndexBean;
@@ -10,13 +7,13 @@ import cn.figo.mydemo.bean.BanguminIndexHeaderBean;
 import cn.figo.mydemo.bean.LiveIndexBean;
 import cn.figo.mydemo.bean.LiveVideoSourceBean;
 import cn.figo.mydemo.bean.RecommendBannerBean;
-import cn.figo.mydemo.bean.RecommendBean;
 import cn.figo.mydemo.bean.VideoDetailBean;
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Headers;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 /**
@@ -31,9 +28,7 @@ public interface Api {
             "Content-type: application/json"
     })
 
-    //获取首页推荐
-    @GET("http://app.bilibili.com/api/index/9214/index.android.xxhdpi.android4.json")
-    Call<RecommendBean> updateRecommend();
+
 
     //获取首页番剧
     @GET("http://app.bilibili.com/bangumi/operation_module?_device=android&_hwid=51e96f5f2f54d5f9&_ulv=10000&module=bangumi&platform=android&screen=xxhdpi")
@@ -79,5 +74,10 @@ public interface Api {
     //获取番剧lastupdate的详情
     @GET("http://bangumi.bilibili.com/api/season_v2?_device=android&_hwid=ac538400c68784bb&_ulv=10000&access_key=946bb9a10cbfda5fadc9ed818b5186f5&appkey=c1b107428d337928&build=412001&platform=android")
     Call<BangumiDetailBean> getBangumiDetailBySeasonID(@Query("season_id") String season_id,@Query("ts") String ts,@Query("type") String type);//bangumi
+
+
+    //获取番剧播放地址
+    @GET("http://api.bilibili.com/playurl?page=1&platform=html5&quality=1&vtype=mp4&type=jsonp&_=1476304264934")
+    Call<String> getBangumiPlayUrl(@Query("aid") String aid);
 
 }
