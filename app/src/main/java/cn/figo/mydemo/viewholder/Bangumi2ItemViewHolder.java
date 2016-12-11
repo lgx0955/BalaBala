@@ -1,6 +1,5 @@
 package cn.figo.mydemo.viewholder;
 
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,7 +12,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.bean.RecommendBean;
-import cn.figo.mydemo.ui.activity.FileListActivity;
 
 /**
  * User: Ligx
@@ -44,11 +42,11 @@ public class Bangumi2ItemViewHolder extends BaseViewHolder<RecommendBean.ResultE
         bangumi2Title.setText(bodyEntity.getTitle());
         bangumi2Number.setText(bodyEntity.getDanmaku());
 
-        bangumi2Container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                overlay(FileListActivity.class);
-            }
-        });
+//        bangumi2Container.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                overlay(FileListActivity.class);
+//            }
+//        });
     }
 }

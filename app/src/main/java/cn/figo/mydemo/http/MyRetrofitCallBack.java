@@ -9,7 +9,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.litesuits.orm.db.assit.WhereBuilder;
-import com.squareup.okhttp.Request;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -20,9 +19,10 @@ import cn.figo.mydemo.bean.ResponseBaseBean;
 import cn.figo.mydemo.bean.ResponseBodyBean;
 import cn.figo.mydemo.utils.MD5;
 import cn.figo.mydemo.utils.ToastHelper;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -95,9 +95,9 @@ public class MyRetrofitCallBack<T extends ResponseBaseBean>  implements Callback
     Gson gson = new Gson();
 
     @Override
-    public void onResponse(Response<T> response, Retrofit retrofit) {
+    public void onResponse(Call<T> call, Response<T> response) {
         if (mContext != null) {
-            if (response.isSuccess()){
+            if (response.isSuccessful()){
                 final T t = response.body();
                 int status = t.getCode();
                 if (status == 0) {
@@ -145,14 +145,12 @@ public class MyRetrofitCallBack<T extends ResponseBaseBean>  implements Callback
         }
     }
 
-
     @Override
-    public void onFailure(Throwable t) {
+    public void onFailure(Call<T> call, Throwable t) {
         t.printStackTrace();
         try {
             onNetError(request, t, isCacheOkf);
         }catch (Exception e){}
-
     }
 
     private String buildKey(String url) {

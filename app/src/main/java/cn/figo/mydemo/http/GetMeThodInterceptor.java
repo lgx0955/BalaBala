@@ -3,17 +3,15 @@ package cn.figo.mydemo.http;
 
 import android.os.Looper;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import java.io.IOException;
 
 import cn.figo.mydemo.bean.ResponseBodyBean;
 import cn.figo.mydemo.utils.MD5;
 import cn.figo.mydemo.utils.NetworkUtils;
-import retrofit.Call;
-
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Call;
 
 public class GetMeThodInterceptor<T> implements Interceptor {
     CachePolicy cachePolicy;

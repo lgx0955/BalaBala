@@ -309,7 +309,7 @@ public class Util {
         List<T> lst = new ArrayList<T>();
         JsonArray array = new JsonParser().parse(json).getAsJsonArray();
         for (final JsonElement elem : array) {
-            lst.add(new Gson().fromJson(elem, clazz));
+            lst.add(gson.fromJson(elem, clazz));
         }
         return lst;
     }

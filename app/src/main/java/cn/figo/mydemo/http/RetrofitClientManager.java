@@ -1,14 +1,8 @@
 package cn.figo.mydemo.http;
 
-import com.squareup.okhttp.OkHttpClient;
-
-import java.util.concurrent.TimeUnit;
-
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * User: Ligx
@@ -58,8 +52,8 @@ public class RetrofitClientManager {
     public static Retrofit getRetrofit() {
         if (retrofit == null){
             httpClient = new OkHttpClient();
-            httpClient.setReadTimeout(15, TimeUnit.SECONDS);
-            httpClient.setConnectTimeout(15, TimeUnit.SECONDS);
+//            httpClient.setReadTimeout(15, TimeUnit.SECONDS);
+//            httpClient.setConnectTimeout(15, TimeUnit.SECONDS);
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseurl)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -69,22 +63,22 @@ public class RetrofitClientManager {
         return retrofit;
     }
 
-    public static <T> void getAsyn(Call<T> responseCall, MyRetrofitCallBack myRetrofitCallBack) {
-        cachePolicy = myRetrofitCallBack.getCachePolicy();
-        retrofit.client().interceptors().clear();
-        retrofit.client().interceptors().add(new GetMeThodInterceptor(cachePolicy, myRetrofitCallBack,responseCall));
-        responseCall.enqueue(myRetrofitCallBack);
-    }
-
-    public static <T> void getSignAsyn(Call<T> responseCall, MyRetrofitCallBack myRetrofitCallBack) {
-        cachePolicy = myRetrofitCallBack.getCachePolicy();
-        retrofit.client().interceptors().clear();
-        retrofit.client().interceptors().add(new GetMeThodInterceptor(cachePolicy, myRetrofitCallBack,responseCall));
-        retrofit.client().interceptors().add(new SignInterceptor());
-        responseCall.enqueue(myRetrofitCallBack);
-    }
-
-    public static <T> void getAsyn(Call<T> responseCall, Callback callback) {
-        responseCall.enqueue(callback);
-    }
+//    public static <T> void getAsyn(Call<T> responseCall, MyRetrofitCallBack myRetrofitCallBack) {
+//        cachePolicy = myRetrofitCallBack.getCachePolicy();
+//        retrofit.client().interceptors().clear();
+//        retrofit.client().interceptors().add(new GetMeThodInterceptor(cachePolicy, myRetrofitCallBack,responseCall));
+//        responseCall.enqueue(myRetrofitCallBack);
+//    }
+//
+//    public static <T> void getSignAsyn(Call<T> responseCall, MyRetrofitCallBack myRetrofitCallBack) {
+//        cachePolicy = myRetrofitCallBack.getCachePolicy();
+//        retrofit.client().interceptors().clear();
+//        retrofit.client().interceptors().add(new GetMeThodInterceptor(cachePolicy, myRetrofitCallBack,responseCall));
+//        retrofit.client().interceptors().add(new SignInterceptor());
+//        responseCall.enqueue(myRetrofitCallBack);
+//    }
+//
+//    public static <T> void getAsyn(Call<T> responseCall, Callback callback) {
+//        responseCall.enqueue(callback);
+//    }
 }

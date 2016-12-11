@@ -1,71 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/home_drawerlayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_drawerlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!--主要内容-->
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.design.widget.CoordinatorLayout
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <!--头部分-->
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/home_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:contentInsetEnd="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll|enterAlways|snap">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/home_toolbar"
+                <include
+                    layout="@layout/inc_home_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:contentInsetStart="0dp"
-                    app:contentInsetEnd="0dp">
-                    <include
-                        layout="@layout/inc_home_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        />
-                </android.support.v7.widget.Toolbar>
-                <com.quinny898.library.persistentsearch.SearchBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/searchbox"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginTop="-6dp"
-                    android:layout_marginLeft="-6dp"
-                    android:layout_marginRight="-6dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true" />
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/home_tablayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabIndicatorColor="@color/bili_color_white"
-                    app:tabIndicatorHeight="2dp"
-                    app:tabMode="fixed"
-                    app:tabSelectedTextColor="@color/bili_color_white_pressed"
-                    app:tabTextColor="@color/bili_color_white_normal"/>
-            </android.support.design.widget.AppBarLayout>
-
-            <android.support.v4.view.ViewPager
-                android:background="@color/bili_color_light_gray"
-                android:id="@+id/home_viewpager"
+                    android:layout_height="?attr/actionBarSize" />
+            </android.support.v7.widget.Toolbar>
+            <android.support.design.widget.TabLayout
+                android:id="@+id/home_tablayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                />
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@color/bili_color_white"
+                app:tabIndicatorHeight="2dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/bili_color_white_pressed"
+                app:tabTextColor="@color/bili_color_white_normal" />
+        </android.support.design.widget.AppBarLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/home_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bili_color_light_gray"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </android.support.design.widget.CoordinatorLayout>
+        <com.quinny898.library.persistentsearch.SearchBox
+            android:layout_width="wrap_content"
+            android:id="@+id/searchbox"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="-6dp"
+            android:layout_marginLeft="-6dp"
+            android:layout_marginRight="-6dp"
+            android:layout_gravity="right" />
 
-        </android.support.design.widget.CoordinatorLayout>
-    </LinearLayout>
+    </FrameLayout>
 
     <!--左侧菜单-->
     <android.support.design.widget.NavigationView

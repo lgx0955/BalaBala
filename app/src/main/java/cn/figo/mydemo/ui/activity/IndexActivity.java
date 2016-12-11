@@ -106,14 +106,10 @@ public class IndexActivity extends BaseActivity implements NavigationView.OnNavi
         mFragments.add(new RecommendFragment());
         mFragments.add(new DiscoverFragment());
 
-
-        //tab和viewpager绑定
-        //给viewpager设置适配器
         homeViewpager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
         homeTablayout.setupWithViewPager(homeViewpager);
 
         homeViewpager.setCurrentItem(2);
-//        homeViewpager.setOffscreenPageLimit(3);
     }
     /**
      * 初始化toolbar
@@ -250,6 +246,7 @@ public class IndexActivity extends BaseActivity implements NavigationView.OnNavi
 
 
     public void openSearch() {
+//        searchbox.showSearch(true);
         searchbox.revealFromMenuItem(R.id.action_search, this);
 
         for (int x = 0; x < 10; x++) {

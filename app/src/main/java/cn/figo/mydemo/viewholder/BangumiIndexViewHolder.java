@@ -1,6 +1,5 @@
 package cn.figo.mydemo.viewholder;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,7 +12,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.bean.BangumiIndexBean;
-import cn.figo.mydemo.ui.activity.BangumiDetailActivity;
 import cn.figo.mydemo.utils.DensityUtils;
 import cn.figo.mydemo.utils.LPhone;
 
@@ -49,13 +47,13 @@ public class BangumiIndexViewHolder extends BaseViewHolder<BangumiIndexBean.List
 
         bangumi2Title.setText(listEntity.getTitle());
 
-        bangumi2Container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString(BangumiDetailActivity.BANGUMI_SPID_EXTRA,listEntity.getSpid()+"");
-                overlay(BangumiDetailActivity.class,bundle);
-            }
-        });
+//        bangumi2Container.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString(BangumiDetailActivity.BANGUMI_SPID_EXTRA,listEntity.getSpid()+"");
+//                overlay(BangumiDetailActivity.class,bundle);
+//            }
+//        });
     }
 }

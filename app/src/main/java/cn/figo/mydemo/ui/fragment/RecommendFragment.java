@@ -1,7 +1,6 @@
 package cn.figo.mydemo.ui.fragment;
 
 
-import android.content.Context;
 import android.os.Looper;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.bumptech.glide.Glide;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 
@@ -23,12 +20,7 @@ import cn.figo.mydemo.R;
 import cn.figo.mydemo.adapter.IndexAdapter;
 import cn.figo.mydemo.base.basefragment.BaseFragment;
 import cn.figo.mydemo.bean.RecommendBannerBean;
-import cn.figo.mydemo.bean.RecommendBean;
-import cn.figo.mydemo.http.CachePolicy;
-import cn.figo.mydemo.http.MyRetrofitCallBack;
-import cn.figo.mydemo.http.RetrofitClientManager;
 import cn.figo.mydemo.utils.DensityUtils;
-import cn.figo.mydemo.viewholder.NetworkImageViewHolder;
 
 public class RecommendFragment extends BaseFragment {
 
@@ -96,12 +88,12 @@ public class RecommendFragment extends BaseFragment {
         });
         indexAdapter.setNoMore(R.layout.view_nomore);
 
-        indexAdapter.setError(R.layout.view_error).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                indexAdapter.resumeMore();
-            }
-        });
+//        indexAdapter.setError(R.layout.view_error).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                indexAdapter.resumeMore();
+//            }
+//        });
 
         recyclerView.getSwipeToRefresh().setProgressViewOffset(true, -20, 100);
 
@@ -110,62 +102,62 @@ public class RecommendFragment extends BaseFragment {
     }
 
     public void getRecommend(){
-        RetrofitClientManager.getAsyn(RetrofitClientManager.api.updateRecommend(),new MyRetrofitCallBack<RecommendBean>(mContext, CachePolicy.POLICY_ON_NET_ERROR){
-            @Override
-            public void onDo(RecommendBean response) {
-                super.onDo(response);
-                indexAdapter.clear();
-                indexAdapter.addAll(response.getResult());
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                recyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.setRefreshing(false);
-                    }
-                });
-            }
-        });
+//        RetrofitClientManager.getAsyn(RetrofitClientManager.api.updateRecommend(),new MyRetrofitCallBack<RecommendBean>(mContext, CachePolicy.POLICY_ON_NET_ERROR){
+//            @Override
+//            public void onDo(RecommendBean response) {
+//                super.onDo(response);
+//                indexAdapter.clear();
+//                indexAdapter.addAll(response.getResult());
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                super.onFinish();
+//                recyclerView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        recyclerView.setRefreshing(false);
+//                    }
+//                });
+//            }
+//        });
     }
 
     public void getRecommendBanner(){
-        RetrofitClientManager.getAsyn(RetrofitClientManager.api.updateRecommendBanner(),new MyRetrofitCallBack<RecommendBannerBean>(mContext, CachePolicy.POLICY_ON_NET_ERROR){
-            @Override
-            public void onDo(RecommendBannerBean response) {
-                super.onDo(response);
-                bannerBeans.clear();
-                bannerBeans.addAll(response.getData());
-                try {
-                    convenientBanner.setPages(new CBViewHolderCreator<NetworkImageViewHolder>() {
-                        @Override
-                        public NetworkImageViewHolder createHolder() {
-                            return new NetworkImageViewHolder<RecommendBannerBean.DataEntity>() {
-                                @Override
-                                public void UpdateUI(Context context, int position, final RecommendBannerBean.DataEntity data) {
-                                    Glide.with(mContext).load(data.getImage()).into(imageView);
-                                }
-                            };
-                        }
-                    }, bannerBeans).setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-                            .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
-                }catch (Exception e){e.printStackTrace();}
-
-                convenientBanner.startTurning(5000);
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                recyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.setRefreshing(false);
-                    }
-                });
-            }
-        });
+//        RetrofitClientManager.getAsyn(RetrofitClientManager.api.updateRecommendBanner(),new MyRetrofitCallBack<RecommendBannerBean>(mContext, CachePolicy.POLICY_ON_NET_ERROR){
+//            @Override
+//            public void onDo(RecommendBannerBean response) {
+//                super.onDo(response);
+//                bannerBeans.clear();
+//                bannerBeans.addAll(response.getData());
+//                try {
+//                    convenientBanner.setPages(new CBViewHolderCreator<NetworkImageViewHolder>() {
+//                        @Override
+//                        public NetworkImageViewHolder createHolder() {
+//                            return new NetworkImageViewHolder<RecommendBannerBean.DataEntity>() {
+//                                @Override
+//                                public void UpdateUI(Context context, int position, final RecommendBannerBean.DataEntity data) {
+//                                    Glide.with(mContext).load(data.getImage()).into(imageView);
+//                                }
+//                            };
+//                        }
+//                    }, bannerBeans).setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+//                            .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
+//                }catch (Exception e){e.printStackTrace();}
+//
+//                convenientBanner.startTurning(5000);
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                super.onFinish();
+//                recyclerView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        recyclerView.setRefreshing(false);
+//                    }
+//                });
+//            }
+//        });
     }
 }

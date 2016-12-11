@@ -65,19 +65,16 @@ public abstract class BaseLazyFragment extends Fragment {
     private boolean isFirstInvisible = true;
     private boolean isPrepared;
 
-
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
-        mContext = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TAG_LOG = this.getClass().getSimpleName();
-//        AppService.getInstance().getBus().register(this);
         mTaskId=getActivity().getTaskId();
     }
 
@@ -115,18 +112,11 @@ public abstract class BaseLazyFragment extends Fragment {
         mScreenHeight = displayMetrics.heightPixels;
         mScreenWidth = displayMetrics.widthPixels;
 
-//        init();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        AppService.getInstance().getBus().unregister(this);
     }
 
     @Override

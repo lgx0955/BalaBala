@@ -1,7 +1,5 @@
 package cn.figo.mydemo.viewholder;
 
-import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,7 +12,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.bean.LiveIndexBean;
-import cn.figo.mydemo.ui.activity.LiveDetailActivity;
 import cn.figo.mydemo.utils.DensityUtils;
 import cn.figo.mydemo.utils.LPhone;
 
@@ -54,13 +51,13 @@ public class LivePartitionsItemItemViewHolder extends BaseViewHolder<LiveIndexBe
         liveTitle.setText(bodyEntity.getTitle());
         Glide.with(getContext()).load(bodyEntity.getOwner().getFace()).centerCrop().into(liveOwnerFaceIcon);
 
-        liveContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString(LiveDetailActivity.EXTRA_ROOMID,bodyEntity.getRoom_id()+"");
-                overlay(LiveDetailActivity.class,bundle);
-            }
-        });
+//        liveContainer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString(LiveDetailActivity.EXTRA_ROOMID,bodyEntity.getRoom_id()+"");
+//                overlay(LiveDetailActivity.class,bundle);
+//            }
+//        });
     }
 }

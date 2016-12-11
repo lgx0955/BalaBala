@@ -30,6 +30,7 @@ public class DiscoverFragment extends BaseFragment {
     @Override
     protected void init() {
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.getRecyclerView().setNestedScrollingEnabled(true);
         discoverAdapter = new DiscoverAdapter(mContext);
         discoverAdapter.add("");
         discoverAdapter.add("");

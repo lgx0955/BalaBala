@@ -1,6 +1,5 @@
 package cn.figo.mydemo.viewholder;
 
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,7 +12,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.bean.RecommendBean;
-import cn.figo.mydemo.ui.activity.FileListActivity;
 
 /**
  * User: Ligx
@@ -45,11 +43,11 @@ public class LiveItemViewHolder extends BaseViewHolder<RecommendBean.ResultEntit
         liveTitle.setText(bodyEntity.getTitle());
         liveNumber.setText(bodyEntity.getDanmaku());
 
-        liveContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                overlay(FileListActivity.class);
-            }
-        });
+//        liveContainer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                overlay(FileListActivity.class);
+//            }
+//        });
     }
 }

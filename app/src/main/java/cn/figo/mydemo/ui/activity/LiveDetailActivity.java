@@ -5,14 +5,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ImageSpan;
-import android.util.Log;
-import android.widget.FrameLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,14 +25,9 @@ import java.util.List;
 import butterknife.Bind;
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.base.baseactivity.BaseActivity;
-import cn.figo.mydemo.bean.LiveVideoSourceBean;
 import cn.figo.mydemo.danmaku.BiliDanmakuClient;
 import cn.figo.mydemo.danmaku.DanmakuBean;
 import cn.figo.mydemo.danmaku.IIncomingDanmakuCallback;
-import cn.figo.mydemo.http.CachePolicy;
-import cn.figo.mydemo.http.MyRetrofitCallBack;
-import cn.figo.mydemo.http.RetrofitClientManager;
-import cn.figo.mydemo.utils.DensityUtils;
 import cn.figo.mydemo.widget.media.AndroidMediaController;
 import cn.figo.mydemo.widget.media.IjkVideoView;
 import master.flame.danmaku.controller.IDanmakuView;
@@ -43,22 +35,16 @@ import master.flame.danmaku.danmaku.loader.ILoader;
 import master.flame.danmaku.danmaku.loader.IllegalDataException;
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
-import master.flame.danmaku.danmaku.model.Danmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
-import master.flame.danmaku.danmaku.model.IDanmakus;
 import master.flame.danmaku.danmaku.model.IDisplayer;
-import master.flame.danmaku.danmaku.model.android.AndroidDisplayer;
 import master.flame.danmaku.danmaku.model.android.BaseCacheStuffer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
 import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
-import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import master.flame.danmaku.danmaku.util.IOUtils;
-import master.flame.danmaku.ui.widget.DanmakuView;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-import tv.danmaku.ijk.media.player.misc.ITrackInfo;
 
 /**
  * User: Ligx
@@ -149,23 +135,23 @@ public class LiveDetailActivity extends BaseActivity {
 
 
     public void getLiveVideoSource(String roomID) {
-        RetrofitClientManager.getAsyn(RetrofitClientManager.api.getLiveVideoSource(roomID), new MyRetrofitCallBack<LiveVideoSourceBean>(mContext, CachePolicy.POLICY_ON_NET_ERROR) {
-            @Override
-            public void onDo(LiveVideoSourceBean response) {
-                super.onDo(response);
-//                videoView.toggleAspectRatio();
-                videoView.setVideoPath(response.getData());
-                videoView.start();
-
-                initDanmaku();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                hideLoadingDialog();
-            }
-        });
+//        RetrofitClientManager.getAsyn(RetrofitClientManager.api.getLiveVideoSource(roomID), new MyRetrofitCallBack<LiveVideoSourceBean>(mContext, CachePolicy.POLICY_ON_NET_ERROR) {
+//            @Override
+//            public void onDo(LiveVideoSourceBean response) {
+//                super.onDo(response);
+////                videoView.toggleAspectRatio();
+//                videoView.setVideoPath(response.getData());
+//                videoView.start();
+//
+//                initDanmaku();
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                super.onFinish();
+//                hideLoadingDialog();
+//            }
+//        });
     }
 
     private void initDanmaku() {
@@ -193,6 +179,7 @@ public class LiveDetailActivity extends BaseActivity {
         DanmakuBean danmakuBean=null;
         JSONArray style = null;
         try {
+            System.out.println("======"+s);
             JSONObject jsonObject = new JSONObject(s);
             if (jsonObject.getString("cmd").equals("DANMU_MSG")){
                 JSONArray jsonArray = jsonObject.getJSONArray("info");
@@ -216,7 +203,7 @@ public class LiveDetailActivity extends BaseActivity {
                     int type = Integer.parseInt(style.getString(1)); // 弹幕类型
                     float textSize = Float.parseFloat(style.getString(2)); // 字体大小
                     int color = Integer.parseInt(style.getString(3)) | 0xFF000000; // 颜色
-                    danmaku.time = svDanmaku.getCurrentTime() + 1000;
+                    danmaku.setTime(svDanmaku.getCurrentTime() + 1000);
                     danmaku.isLive = true;
                     danmaku.textSize = textSize * (danmakuContext.getDisplayer().getDensity() - 0.6f);
                     danmaku.textColor = color;

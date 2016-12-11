@@ -1,5 +1,3 @@
 include ':app',
         ':BasePro',
-        ':swipeback',
-        ':persistentsearch',
-        ':easyrecyclerview'
+        ':persistentsearch'

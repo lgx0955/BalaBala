@@ -6,7 +6,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.Bind;
@@ -14,12 +13,6 @@ import butterknife.ButterKnife;
 import cn.figo.mydemo.R;
 import cn.figo.mydemo.bean.AidBean;
 import cn.figo.mydemo.bean.BanguminIndexHeaderBean;
-import cn.figo.mydemo.bean.VideoDetailBean;
-import cn.figo.mydemo.http.RetrofitClientManager;
-import cn.figo.mydemo.ui.activity.VideoActivity;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 /**
  * User: Ligx
@@ -70,35 +63,35 @@ public class LastUpdateViewHolder extends BaseViewHolder<BanguminIndexHeaderBean
 
     public void getVideoList(String session_id){
         System.out.println("aaaaa"+session_id);
-        RetrofitClientManager.getAsyn(RetrofitClientManager.api.getBangumiDetail(), new Callback() {
-            @Override
-            public void onResponse(Response response, Retrofit retrofit) {
-                VideoDetailBean videoDetailBean = new Gson().fromJson(response.body().toString(),VideoDetailBean.class);
-                System.out.print("aaaaaaaa"+response.body().toString());
-                getVideoPathByAid(videoDetailBean.getResult().getEpisodes().get(0).getAv_id());
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+//        RetrofitClientManager.getAsyn(RetrofitClientManager.api.getBangumiDetail(), new Callback() {
+//            @Override
+//            public void onResponse(Response response, Retrofit retrofit) {
+//                VideoDetailBean videoDetailBean = new Gson().fromJson(response.body().toString(),VideoDetailBean.class);
+//                System.out.print("aaaaaaaa"+response.body().toString());
+//                getVideoPathByAid(videoDetailBean.getResult().getEpisodes().get(0).getAv_id());
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//
+//            }
+//        });
     }
 
     public void getVideoPathByAid(String aid){
-        RetrofitClientManager.getAsyn(RetrofitClientManager.api.getVideoPath(aid,"1"), new Callback<AidBean>() {
-            @Override
-            public void onResponse(Response<AidBean> response, Retrofit retrofit) {
-                aidBean = response.body();
-                System.out.println("开启视频");
-                VideoActivity.intentTo(getContext(),aidBean.getSrc(),"aaaa");
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                t.printStackTrace();
-            }
-        });
+//        RetrofitClientManager.getAsyn(RetrofitClientManager.api.getVideoPath(aid,"1"), new Callback<AidBean>() {
+//            @Override
+//            public void onResponse(Response<AidBean> response, Retrofit retrofit) {
+//                aidBean = response.body();
+//                System.out.println("开启视频");
+//                VideoActivity.intentTo(getContext(),aidBean.getSrc(),"aaaa");
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
     }
 
 }
